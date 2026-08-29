@@ -1,0 +1,269 @@
+name: Build and publish Libagu Android test apps
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Private libagu-mobile branch, tag or commit
+        required: true
+        default: main
+        type: string
+      include_play_bundles:
+        description: Also attach AAB files for later Play Console testing
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: libagu-android-test-release
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    environment: android-signing
+    env:
+      LIBAGU_APP_ENV: staging
+      CUSTOMER_ANDROID_KEYSTORE_BASE64: ${{ secrets.CUSTOMER_ANDROID_KEYSTORE_BASE64 }}
+      CUSTOMER_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.CUSTOMER_ANDROID_KEYSTORE_PASSWORD }}
+      CUSTOMER_ANDROID_KEY_ALIAS: ${{ secrets.CUSTOMER_ANDROID_KEY_ALIAS }}
+      CUSTOMER_ANDROID_KEY_PASSWORD: ${{ secrets.CUSTOMER_ANDROID_KEY_PASSWORD }}
+      BUSINESS_ANDROID_KEYSTORE_BASE64: ${{ secrets.BUSINESS_ANDROID_KEYSTORE_BASE64 }}
+      BUSINESS_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.BUSINESS_ANDROID_KEYSTORE_PASSWORD }}
+      BUSINESS_ANDROID_KEY_ALIAS: ${{ secrets.BUSINESS_ANDROID_KEY_ALIAS }}
+      BUSINESS_ANDROID_KEY_PASSWORD: ${{ secrets.BUSINESS_ANDROID_KEY_PASSWORD }}
+    steps:
+      - name: Check out private mobile source
+        uses: actions/checkout@v4
+        with:
+          repository: EkremGuelbahar/libagu-mobile
+          ref: ${{ inputs.source_ref }}
+          path: source
+          ssh-key: ${{ secrets.LIBAGU_MOBILE_READ_KEY }}
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: npm
+          cache-dependency-path: source/package-lock.json
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install pinned JavaScript dependencies
+        working-directory: source
+        run: npm ci
+
+      - name: Run source quality gates
+        working-directory: source
+        run: npm run check
+
+      - name: Install pinned Android toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          sdkmanager \
+            "platform-tools" \
+            "platforms;android-36" \
+            "build-tools;36.0.0" \
+            "ndk;27.1.12297006" \
+            "cmake;3.22.1"
+
+      - name: Validate protected build secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            CUSTOMER_ANDROID_KEYSTORE_BASE64
+            CUSTOMER_ANDROID_KEYSTORE_PASSWORD
+            CUSTOMER_ANDROID_KEY_ALIAS
+            CUSTOMER_ANDROID_KEY_PASSWORD
+            BUSINESS_ANDROID_KEYSTORE_BASE64
+            BUSINESS_ANDROID_KEYSTORE_PASSWORD
+            BUSINESS_ANDROID_KEY_ALIAS
+            BUSINESS_ANDROID_KEY_PASSWORD
+          )
+          for name in "${required[@]}"; do
+            if [[ -z "${!name:-}" ]]; then
+              echo "Required protected secret is missing: ${name}" >&2
+              exit 20
+            fi
+          done
+
+      - name: Decode signing keys without logging them
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          printf '%s' "$CUSTOMER_ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/customer.keystore"
+          printf '%s' "$BUSINESS_ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/business.keystore"
+          test -s "$RUNNER_TEMP/customer.keystore"
+          test -s "$RUNNER_TEMP/business.keystore"
+          keytool -list \
+            -keystore "$RUNNER_TEMP/customer.keystore" \
+            -storepass "$CUSTOMER_ANDROID_KEYSTORE_PASSWORD" \
+            -alias "$CUSTOMER_ANDROID_KEY_ALIAS" >/dev/null
+          keytool -list \
+            -keystore "$RUNNER_TEMP/business.keystore" \
+            -storepass "$BUSINESS_ANDROID_KEYSTORE_PASSWORD" \
+            -alias "$BUSINESS_ANDROID_KEY_ALIAS" >/dev/null
+
+      - name: Resolve immutable build metadata
+        id: metadata
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_sha="$(git rev-parse HEAD)"
+          version_code="$((100000000 + GITHUB_RUN_NUMBER))"
+          customer_version="$(node -p "require('./config/mobile-release-versions.cjs').mobileReleaseVersion('customer')")"
+          business_version="$(node -p "require('./config/mobile-release-versions.cjs').mobileReleaseVersion('business')")"
+          echo "source_sha=${source_sha}" >> "$GITHUB_OUTPUT"
+          echo "version_code=${version_code}" >> "$GITHUB_OUTPUT"
+          echo "customer_version=${customer_version}" >> "$GITHUB_OUTPUT"
+          echo "business_version=${business_version}" >> "$GITHUB_OUTPUT"
+
+      - name: Build signed staging APKs
+        working-directory: source
+        shell: bash
+        env:
+          VERSION_CODE: ${{ steps.metadata.outputs.version_code }}
+          INCLUDE_PLAY_BUNDLES: ${{ inputs.include_play_bundles }}
+        run: |
+          set -euo pipefail
+          mkdir -p release
+
+          build_app() {
+            local app="$1"
+            local keystore="$2"
+            local store_password="$3"
+            local key_alias="$4"
+            local key_password="$5"
+            local apk_name="$6"
+            local aab_name="$7"
+            local expected_package="$8"
+
+            (
+              cd "apps/${app}"
+              npx expo prebuild --platform android --no-install --clean
+            )
+
+            export LIBAGU_ANDROID_KEYSTORE_PATH="$keystore"
+            export LIBAGU_ANDROID_KEYSTORE_PASSWORD="$store_password"
+            export LIBAGU_ANDROID_KEY_ALIAS="$key_alias"
+            export LIBAGU_ANDROID_KEY_PASSWORD="$key_password"
+            node scripts/prepare-android-release.mjs \
+              --app "$app" \
+              --version-code "$VERSION_CODE"
+
+            local tasks=(app:assembleRelease)
+            if [[ "$INCLUDE_PLAY_BUNDLES" == "true" ]]; then
+              tasks+=(app:bundleRelease)
+            fi
+            (
+              cd "apps/${app}/android"
+              chmod +x gradlew
+              ./gradlew "${tasks[@]}" --no-daemon
+            )
+
+            local apk="apps/${app}/android/app/build/outputs/apk/release/app-release.apk"
+            test -s "$apk"
+            "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose "$apk"
+            local actual_package
+            actual_package="$("$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$apk" | sed -n "s/package: name='\([^']*\)'.*/\1/p")"
+            if [[ "$actual_package" != "$expected_package" ]]; then
+              echo "Unexpected package for ${app}: ${actual_package}" >&2
+              exit 21
+            fi
+            cp "$apk" "release/${apk_name}"
+
+            if [[ "$INCLUDE_PLAY_BUNDLES" == "true" ]]; then
+              local aab="apps/${app}/android/app/build/outputs/bundle/release/app-release.aab"
+              test -s "$aab"
+              cp "$aab" "release/${aab_name}"
+            fi
+          }
+
+          build_app \
+            customer \
+            "$RUNNER_TEMP/customer.keystore" \
+            "$CUSTOMER_ANDROID_KEYSTORE_PASSWORD" \
+            "$CUSTOMER_ANDROID_KEY_ALIAS" \
+            "$CUSTOMER_ANDROID_KEY_PASSWORD" \
+            libagu-staging.apk \
+            libagu-staging.aab \
+            de.libagu.customer.staging
+
+          build_app \
+            business \
+            "$RUNNER_TEMP/business.keystore" \
+            "$BUSINESS_ANDROID_KEYSTORE_PASSWORD" \
+            "$BUSINESS_ANDROID_KEY_ALIAS" \
+            "$BUSINESS_ANDROID_KEY_PASSWORD" \
+            libagu-business-staging.apk \
+            libagu-business-staging.aab \
+            de.libagu.business.staging
+
+          (
+            cd release
+            sha256sum ./* > SHA256SUMS.txt
+          )
+
+      - name: Create release notes
+        working-directory: source
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ steps.metadata.outputs.source_sha }}
+          VERSION_CODE: ${{ steps.metadata.outputs.version_code }}
+          CUSTOMER_VERSION: ${{ steps.metadata.outputs.customer_version }}
+          BUSINESS_VERSION: ${{ steps.metadata.outputs.business_version }}
+          INCLUDE_PLAY_BUNDLES: ${{ inputs.include_play_bundles }}
+        run: |
+          cat > release/RELEASE_NOTES.md <<EOF
+          Automatisch gebauter Android-Teststand fuer die isolierte Libagu-Stagingumgebung.
+
+          - Quellstand: `${SOURCE_SHA}`
+          - Android versionCode: `${VERSION_CODE}`
+          - Libagu: `${CUSTOMER_VERSION}`
+          - Libagu Business: `${BUSINESS_VERSION}`
+          - Play-Bundles enthalten: `${INCLUDE_PLAY_BUNDLES}`
+
+          Nur synthetische Testdaten verwenden. Die APK-Dateien koennen direkt auf Android installiert werden; AAB-Dateien sind ausschliesslich fuer die Google Play Console bestimmt. Pruefsummen stehen in `SHA256SUMS.txt`.
+          EOF
+
+      - name: Publish public GitHub release
+        working-directory: source
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ steps.metadata.outputs.source_sha }}
+          VERSION_CODE: ${{ steps.metadata.outputs.version_code }}
+        run: |
+          set -euo pipefail
+          tag="android-staging-vc${VERSION_CODE}"
+          short_sha="${SOURCE_SHA:0:7}"
+          assets=(release/libagu-staging.apk release/libagu-business-staging.apk release/SHA256SUMS.txt)
+          if [[ -f release/libagu-staging.aab ]]; then
+            assets+=(release/libagu-staging.aab release/libagu-business-staging.aab)
+          fi
+          gh release create "$tag" "${assets[@]}" \
+            --repo EkremGuelbahar/libagu-android-downloads \
+            --target main \
+            --title "Libagu Android Testbuild ${VERSION_CODE} (${short_sha})" \
+            --notes-file release/RELEASE_NOTES.md \
+            --latest
+
+      - name: Remove decoded signing keys
+        if: always()
+        shell: bash
+        run: |
+          rm -f "$RUNNER_TEMP/customer.keystore" "$RUNNER_TEMP/business.keystore"
