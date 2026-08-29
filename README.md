@@ -35,3 +35,8 @@ Datei mit `SHA256SUMS.txt` aus demselben Release verifiziert werden.
 - Keystores, Kennwoerter und der private Quellcode befinden sich nicht in
   diesem Repository.
 - Jeder Release nennt den exakten Quell-Commit und den Android-Versionscode.
+
+## Neuen Teststand bauen
+
+Der Build wird unter **Actions** manuell gestartet. Als `source_ref` ist `main`,
+ein Tag oder ein vollstaendiger 40-Zeichen-Commit-SHA zulaessig.

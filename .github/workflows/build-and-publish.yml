@@ -37,8 +37,19 @@ jobs:
       BUSINESS_ANDROID_KEY_ALIAS: ${{ secrets.BUSINESS_ANDROID_KEY_ALIAS }}
       BUSINESS_ANDROID_KEY_PASSWORD: ${{ secrets.BUSINESS_ANDROID_KEY_PASSWORD }}
     steps:
+      - name: Validate source reference
+        shell: bash
+        env:
+          SOURCE_REF: ${{ inputs.source_ref }}
+        run: |
+          set -euo pipefail
+          if [[ "$SOURCE_REF" =~ ^[0-9a-fA-F]{7,39}$ ]]; then
+            echo "Use a branch, tag or the complete 40-character commit SHA; abbreviated SHAs are ambiguous." >&2
+            exit 19
+          fi
+
       - name: Check out private mobile source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: EkremGuelbahar/libagu-mobile
           ref: ${{ inputs.source_ref }}
@@ -47,14 +58,14 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24.18.0
           cache: npm
           cache-dependency-path: source/package-lock.json
 
       - name: Set up Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
