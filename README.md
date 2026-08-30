@@ -13,6 +13,24 @@ Dieses Repository verteilt signierte Android-Testbuilds von **Libagu** und
 Die APKs verbinden sich ausschliesslich mit der isolierten Libagu-
 Stagingumgebung. Dort duerfen nur synthetische Testdaten verwendet werden.
 
+## Closed Beta mit echten Tester-E-Mails
+
+Der folgende klar gekennzeichnete Prerelease ist ausschließlich für benannte
+Tester vorgesehen und verbindet sich mit der produktiven Libagu-API:
+
+- [Closed-Beta-Downloadseite](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000003)
+- [Libagu Closed Beta](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000003/libagu-beta.apk)
+- [Libagu Business Closed Beta](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000003/libagu-business-beta.apk)
+- [Prüfsummen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000003/SHA256SUMS.txt)
+- [Anleitung und Testgrenzen](BETA-TEST.md)
+
+Ein GitHub-, Expo- oder Entwicklerkonto ist zum Herunterladen nicht nötig.
+Customer-Tester registrieren sich mit ihrer eigenen verifizierten E-Mail.
+Business-Zugriff wird niemals automatisch vergeben, sondern durch einen Admin
+an einen Testsalon gebunden. Die APK-Datei selbst ist öffentlich und darf keine
+Secrets enthalten; Zugriffe werden serverseitig über Identität, Rollen und
+Salon-Mitgliedschaften geschützt.
+
 ## Installation
 
 1. Den passenden Link auf dem Android-Geraet oeffnen und die APK laden.
