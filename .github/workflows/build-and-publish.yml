@@ -202,6 +202,12 @@ jobs:
               test -s "$aab"
               cp "$aab" "release/${aab_name}"
             fi
+
+            # Expo/Gradle generates several GiB per app. Remove intermediates
+            # only after the signed release files have been copied so the
+            # second app cannot exhaust the hosted runner disk.
+            rm -rf "apps/${app}/android"
+            df -h "$GITHUB_WORKSPACE"
           }
 
           build_app \
@@ -242,13 +248,13 @@ jobs:
           cat > release/RELEASE_NOTES.md <<EOF
           Automatisch gebauter Android-Teststand fuer die isolierte Libagu-Stagingumgebung.
 
-          - Quellstand: `${SOURCE_SHA}`
-          - Android versionCode: `${VERSION_CODE}`
-          - Libagu: `${CUSTOMER_VERSION}`
-          - Libagu Business: `${BUSINESS_VERSION}`
-          - Play-Bundles enthalten: `${INCLUDE_PLAY_BUNDLES}`
+          - Quellstand: ${SOURCE_SHA}
+          - Android versionCode: ${VERSION_CODE}
+          - Libagu: ${CUSTOMER_VERSION}
+          - Libagu Business: ${BUSINESS_VERSION}
+          - Play-Bundles enthalten: ${INCLUDE_PLAY_BUNDLES}
 
-          Nur synthetische Testdaten verwenden. Die APK-Dateien koennen direkt auf Android installiert werden; AAB-Dateien sind ausschliesslich fuer die Google Play Console bestimmt. Pruefsummen stehen in `SHA256SUMS.txt`.
+          Nur synthetische Testdaten verwenden. Die APK-Dateien koennen direkt auf Android installiert werden; AAB-Dateien sind ausschliesslich fuer die Google Play Console bestimmt. Pruefsummen stehen in SHA256SUMS.txt.
           EOF
 
       - name: Publish public GitHub release
