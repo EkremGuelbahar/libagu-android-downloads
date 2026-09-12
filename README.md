@@ -15,13 +15,17 @@ Stagingumgebung. Dort duerfen nur synthetische Testdaten verwendet werden.
 
 ## Closed Beta mit echten Tester-E-Mails
 
+Aktuell: Customer **0.7.0**, Business **0.4.1**, Android **200000006**.
+Angemeldete Kundenbuchungen erscheinen automatisch unter **Termine**.
+Die vorhandene Produktions-Beta kann direkt aktualisiert werden.
+
 Der folgende klar gekennzeichnete Prerelease ist ausschließlich für benannte
 Tester vorgesehen und verbindet sich mit der produktiven Libagu-API:
 
-- [Closed-Beta-Downloadseite](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000003)
-- [Libagu Closed Beta](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000003/libagu-beta.apk)
-- [Libagu Business Closed Beta](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000003/libagu-business-beta.apk)
-- [Prüfsummen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000003/SHA256SUMS.txt)
+- [Closed-Beta-Downloadseite](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000006)
+- [Libagu Closed Beta](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000006/libagu-beta.apk)
+- [Libagu Business Closed Beta](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000006/libagu-business-beta.apk)
+- [Prüfsummen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000006/SHA256SUMS.txt)
 - [Anleitung und Testgrenzen](BETA-TEST.md)
 
 Ein GitHub-, Expo- oder Entwicklerkonto ist zum Herunterladen nicht nötig.
@@ -56,5 +60,7 @@ Datei mit `SHA256SUMS.txt` aus demselben Release verifiziert werden.
 
 ## Neuen Teststand bauen
 
-Der Build wird unter **Actions** manuell gestartet. Als `source_ref` ist `main`,
-ein Tag oder ein vollstaendiger 40-Zeichen-Commit-SHA zulaessig.
+Neue Produktions-Betabuilds laufen im privaten Quellrepository
+[libagu-mobile unter Actions](https://github.com/EkremGuelbahar/libagu-mobile/actions/workflows/android-production-internal.yml).
+Dieses Downloadrepository stellt die fertig geprueften APKs unter Releases bereit.
+Die aelteren Actions-Laeufe hier sind nicht die aktuellen Produktions-Builds.
