@@ -1,6 +1,6 @@
 # Libagu Closed Beta – Kurzanleitung
 
-Stand: 30. August 2026
+Stand: 12. September 2026
 
 Diese Beta ist für persönlich benannte Tester bestimmt. Sie verwendet echte
 E-Mail-Zustellung und die produktive Libagu-API. Bitte ausschließlich eigene
@@ -16,15 +16,15 @@ Daten und eindeutig als Test erkennbare Termine verwenden.
 
 ## Installation ohne Konto
 
-1. Die [Closed-Beta-Downloadseite](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000003)
+1. Die [Closed-Beta-Downloadseite](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000006)
    auf dem Android-Gerät öffnen.
 2. Unter **Assets** `libagu-beta.apk` oder
    `libagu-business-beta.apk` auswählen.
 3. Falls Android fragt, die Installation unbekannter Apps einmalig nur für den
    verwendeten Browser erlauben.
 4. APK installieren und diese Browserfreigabe danach wieder deaktivieren.
-5. Erscheint „Paket steht in Konflikt“, zuerst eine früher über Expo/EAS
-   installierte Variante desselben Produkts deinstallieren und erneut testen.
+5. Die vorhandene Produktions-Beta direkt aktualisieren, nicht vorher deinstallieren.
+   Bei einem Paketkonflikt die genaue Meldung an Ekrem geben.
 
 Ein GitHub-, Expo- oder Entwicklerkonto ist nicht erforderlich.
 
@@ -34,7 +34,11 @@ Ein GitHub-, Expo- oder Entwicklerkonto ist nicht erforderlich.
 2. Starkes, einzigartiges Testpasswort setzen.
 3. E-Mail bestätigen und anschließend anmelden.
 4. Passwort vergessen und Passwortänderung jeweils einmal testen.
-5. Nur eigene Termine buchen; im optionalen Hinweis `TEST` verwenden.
+5. **Angemeldet** einen eigenen Termin buchen; im optionalen Hinweis `TEST` verwenden.
+   Die Konto-Mail wird automatisch verwendet. Danach **Meine Termine ansehen**
+   antippen: Der Termin muss ohne Linkeingabe sichtbar sein.
+   Gastbuchungen und Buchungen aus alten APKs bleiben ueber die Bestaetigungsmail
+   verwaltbar und werden nicht rueckwirkend automatisch ins Konto uebernommen.
 6. Profil, Historie, Auswertung, Terminänderung/-storno, Datenexport,
    Kontolöschung und Abmeldung prüfen.
 
