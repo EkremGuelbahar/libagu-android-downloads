@@ -1,6 +1,6 @@
 # Libagu Closed Beta – Kurzanleitung
 
-Stand: 12. September 2026
+Stand: 14. September 2026
 
 Diese Beta ist für persönlich benannte Tester bestimmt. Sie verwendet echte
 E-Mail-Zustellung und die produktive Libagu-API. Bitte ausschließlich eigene
@@ -16,7 +16,7 @@ Daten und eindeutig als Test erkennbare Termine verwenden.
 
 ## Installation ohne Konto
 
-1. Die [Closed-Beta-Downloadseite](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000006)
+1. Die [Closed-Beta-Downloadseite](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000007)
    auf dem Android-Gerät öffnen.
 2. Unter **Assets** `libagu-beta.apk` oder
    `libagu-business-beta.apk` auswählen.
@@ -39,7 +39,9 @@ Ein GitHub-, Expo- oder Entwicklerkonto ist nicht erforderlich.
    antippen: Der Termin muss ohne Linkeingabe sichtbar sein.
    Gastbuchungen und Buchungen aus alten APKs bleiben ueber die Bestaetigungsmail
    verwaltbar und werden nicht rueckwirkend automatisch ins Konto uebernommen.
-6. Profil, Historie, Auswertung, Terminänderung/-storno, Datenexport,
+6. Profilbild hinzufuegen, nach erneutem Oeffnen pruefen und entfernen.
+   Android mit Systemtasten oder Gestensteuerung sowie groesserer Schrift pruefen.
+7. Profil, Historie, Auswertung, Terminänderung/-storno, Datenexport,
    Kontolöschung und Abmeldung prüfen.
 
 ## Business-Test
