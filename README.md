@@ -15,17 +15,18 @@ Stagingumgebung. Dort duerfen nur synthetische Testdaten verwendet werden.
 
 ## Closed Beta mit echten Tester-E-Mails
 
-Aktuell: Customer **0.7.0**, Business **0.4.1**, Android **200000006**.
+Aktuell: Customer **0.7.1**, Business **0.4.2**, Android **200000007**.
 Angemeldete Kundenbuchungen erscheinen automatisch unter **Termine**.
+Neu: Profilbild-Upload, korrigierte Android-Navigationsabstaende und ein aufgeraeumtes Profil.
 Die vorhandene Produktions-Beta kann direkt aktualisiert werden.
 
 Der folgende klar gekennzeichnete Prerelease ist ausschließlich für benannte
 Tester vorgesehen und verbindet sich mit der produktiven Libagu-API:
 
-- [Closed-Beta-Downloadseite](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000006)
-- [Libagu Closed Beta](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000006/libagu-beta.apk)
-- [Libagu Business Closed Beta](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000006/libagu-business-beta.apk)
-- [Prüfsummen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000006/SHA256SUMS.txt)
+- [Closed-Beta-Downloadseite](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000007)
+- [Libagu Closed Beta](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000007/libagu-beta.apk)
+- [Libagu Business Closed Beta](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000007/libagu-business-beta.apk)
+- [Prüfsummen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000007/SHA256SUMS.txt)
 - [Anleitung und Testgrenzen](BETA-TEST.md)
 
 Ein GitHub-, Expo- oder Entwicklerkonto ist zum Herunterladen nicht nötig.
