@@ -1,67 +1,50 @@
-# Libagu Android Testbuilds
+# Libagu Android-Testbuilds
 
-Dieses Repository verteilt signierte Android-Testbuilds von **Libagu** und
-**Libagu Business**. Der Quellcode bleibt im privaten Repository
-`EkremGuelbahar/libagu-mobile`.
+Hier findest du die geprüften Android-APKs für Libagu und Libagu Business.
+Der Quellcode bleibt im privaten Repository `EkremGuelbahar/libagu-mobile`.
 
-## Download
+## Aktuelle Produktions-Beta
 
-- [Libagu fuer Kundinnen und Kunden](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/latest/download/libagu-staging.apk)
-- [Libagu Business fuer Salon und Team](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/latest/download/libagu-business-staging.apk)
-- [Pruefsummen des aktuellen Builds](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/latest/download/SHA256SUMS.txt)
+Customer **0.8.0**, Business **0.4.3**, Android **200000010**.
+Für benannte Tester: echte E-Mail-Zustellung und produktive API. Bitte nur eigene
+Daten und eindeutig als Test erkennbare Termine im freigegebenen Testsalon verwenden.
 
-Die APKs verbinden sich ausschliesslich mit der isolierten Libagu-
-Stagingumgebung. Dort duerfen nur synthetische Testdaten verwendet werden.
+- [Libagu herunterladen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000010/libagu-beta.apk)
+- [Libagu Business herunterladen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000010/libagu-business-beta.apk)
+- [Release und Prüfsummen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000010)
+- [Testanleitung](BETA-TEST.md)
 
-## Closed Beta mit echten Tester-E-Mails
+Neu: Buchung mit bleibender Navigation und fortsetzbarem Entwurf, aufgeräumtes
+Profil, CSV-Terminübersicht, klarer Terminverlauf und Livefeedback beim Passwort.
+Angemeldete Buchungen erscheinen automatisch unter **Termine**.
 
-Aktuell: Customer **0.7.1**, Business **0.4.2**, Android **200000007**.
-Angemeldete Kundenbuchungen erscheinen automatisch unter **Termine**.
-Neu: Profilbild-Upload, korrigierte Android-Navigationsabstaende und ein aufgeraeumtes Profil.
-Die vorhandene Produktions-Beta kann direkt aktualisiert werden.
+## Installieren oder aktualisieren
 
-Der folgende klar gekennzeichnete Prerelease ist ausschließlich für benannte
-Tester vorgesehen und verbindet sich mit der produktiven Libagu-API:
+1. Den passenden APK-Link auf dem Android-Gerät öffnen.
+2. Falls Android fragt, die Installation für diesen Browser einmalig erlauben.
+3. APK installieren. Die vorhandene Produktions-Beta direkt aktualisieren;
+   nicht vorher deinstallieren. Bei einem Paketkonflikt die Meldung an Ekrem geben.
+4. Die Freigabe für unbekannte Apps danach wieder deaktivieren.
 
-- [Closed-Beta-Downloadseite](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000007)
-- [Libagu Closed Beta](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000007/libagu-beta.apk)
-- [Libagu Business Closed Beta](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000007/libagu-business-beta.apk)
-- [Prüfsummen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000007/SHA256SUMS.txt)
-- [Anleitung und Testgrenzen](BETA-TEST.md)
+Zum Herunterladen ist kein GitHub-, Expo- oder Entwicklerkonto erforderlich.
+Dies ist ein direkter APK-Testbuild und noch kein offizieller Play-Store-Release.
+Die Prüfsumme steht im jeweiligen Release. Signierschlüssel, Passwörter und
+privater Quellcode gehören nicht in dieses Repository.
 
-Ein GitHub-, Expo- oder Entwicklerkonto ist zum Herunterladen nicht nötig.
-Customer-Tester registrieren sich mit ihrer eigenen verifizierten E-Mail.
-Business-Zugriff wird niemals automatisch vergeben, sondern durch einen Admin
-an einen Testsalon gebunden. Die APK-Datei selbst ist öffentlich und darf keine
-Secrets enthalten; Zugriffe werden serverseitig über Identität, Rollen und
-Salon-Mitgliedschaften geschützt.
+Die APK-Dateien sind öffentlich abrufbar. Kunden verwenden ihre eigene verifizierte
+E-Mail. Business-Zugriff erfordert zusätzlich eine zugewiesene Salonrolle.
 
-## Installation
+## Isolierte Staging-Testbuilds
 
-1. Den passenden Link auf dem Android-Geraet oeffnen und die APK laden.
-2. Android erlaubt die Installation gegebenenfalls erst nach einer einmaligen
-   Freigabe fuer den verwendeten Browser.
-3. APK installieren und die Freigabe fuer unbekannte Apps danach wieder
-   deaktivieren.
-4. Bei einem neuen Build denselben Link erneut oeffnen. Android aktualisiert
-   die vorhandene App, wenn sie mit dem unveraenderten Libagu-Schluessel
-   signiert wurde.
+Diese separaten Apps verwenden ausschließlich synthetische Testdaten. Die
+Staging-Links sind kein Update der Produktions-Beta:
 
-Android kann bei einer direkten APK-Installation einen Warnhinweis anzeigen,
-weil die Datei nicht aus dem Play Store stammt. Vor der Installation kann die
-Datei mit `SHA256SUMS.txt` aus demselben Release verifiziert werden.
+- [Libagu Staging](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/latest/download/libagu-staging.apk)
+- [Libagu Business Staging](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/latest/download/libagu-business-staging.apk)
 
-## Sicherheitsrahmen
+## Wo werden neue Builds erstellt?
 
-- Keine produktiven Kundendaten verwenden.
-- APKs nicht als offiziellen Store-Release weitergeben.
-- Keystores, Kennwoerter und der private Quellcode befinden sich nicht in
-  diesem Repository.
-- Jeder Release nennt den exakten Quell-Commit und den Android-Versionscode.
-
-## Neuen Teststand bauen
-
-Neue Produktions-Betabuilds laufen im privaten Quellrepository
-[libagu-mobile unter Actions](https://github.com/EkremGuelbahar/libagu-mobile/actions/workflows/android-production-internal.yml).
-Dieses Downloadrepository stellt die fertig geprueften APKs unter Releases bereit.
-Die aelteren Actions-Laeufe hier sind nicht die aktuellen Produktions-Builds.
+Im privaten Quellrepository unter
+[Libagu Mobile → Actions](https://github.com/EkremGuelbahar/libagu-mobile/actions/workflows/android-production-internal.yml).
+Dieses Downloadrepository stellt die fertigen APKs unter **Releases** bereit.
+Seine älteren Actions-Läufe zeigen nicht die aktuellen Produktions-Builds.
