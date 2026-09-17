@@ -5,18 +5,19 @@ Der Quellcode bleibt im privaten Repository `EkremGuelbahar/libagu-mobile`.
 
 ## Aktuelle Produktions-Beta
 
-Customer **0.8.0**, Business **0.4.3**, Android **200000010**.
+Customer **0.8.0**, Business **0.5.0**, Android **200000011**.
 Für benannte Tester: echte E-Mail-Zustellung und produktive API. Bitte nur eigene
 Daten und eindeutig als Test erkennbare Termine im freigegebenen Testsalon verwenden.
 
-- [Libagu herunterladen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000010/libagu-beta.apk)
-- [Libagu Business herunterladen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000010/libagu-business-beta.apk)
-- [Release und Prüfsummen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000010)
+- [Libagu herunterladen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000011/libagu-beta.apk)
+- [Libagu Business herunterladen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/download/android-production-beta-vc200000011/libagu-business-beta.apk)
+- [Release und Prüfsummen](https://github.com/EkremGuelbahar/libagu-android-downloads/releases/tag/android-production-beta-vc200000011)
 - [Testanleitung](BETA-TEST.md)
 
-Neu: Buchung mit bleibender Navigation und fortsetzbarem Entwurf, aufgeräumtes
-Profil, CSV-Terminübersicht, klarer Terminverlauf und Livefeedback beim Passwort.
-Angemeldete Buchungen erscheinen automatisch unter **Termine**.
+Neu in Business: klare Salon-Einrichtung, persönliche Teameinladungen,
+Veröffentlichung nach Prüfung, automatisch aktualisierte Termine, deutsche
+Statusanzeigen und Schutz ungespeicherter manueller Buchungen.
+Die Kunden-App bleibt bei Version 0.8.0 und erhält denselben aktuellen Buildstand.
 
 ## Installieren oder aktualisieren
 
